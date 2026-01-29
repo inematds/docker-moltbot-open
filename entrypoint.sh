@@ -63,10 +63,30 @@ if [ -n "$OPENROUTER_API_KEY" ] && [ "$OPENROUTER_API_KEY" != "sk-or-your-key-he
   # Export for Node.js access
   export DEFAULT_MODEL
 
+  # Create agent directory structure and auth profiles file
+  AGENT_DIR="$CONFIG_DIR/agents/main/agent"
+  AUTH_PROFILES_FILE="$AGENT_DIR/auth-profiles.json"
+  mkdir -p "$AGENT_DIR"
+
+  # Create auth-profiles.json with OpenRouter credentials
+  # Also create an "anthropic" profile that uses OpenRouter token
+  # This allows models like "anthropic/claude-sonnet-4-5" to work via OpenRouter
+  cat > "$AUTH_PROFILES_FILE" <<EOF
+{
+  "openrouter:default": {
+    "provider": "openrouter",
+    "token": "$OPENROUTER_API_KEY"
+  },
+  "anthropic:default": {
+    "provider": "anthropic",
+    "token": "$OPENROUTER_API_KEY"
+  }
+}
+EOF
+  chmod 600 "$AUTH_PROFILES_FILE"
+
+  # Set default model in config
   inject_json "$CONFIG_FILE" "
-    cfg.auth = cfg.auth || {};
-    cfg.auth.profiles = cfg.auth.profiles || {};
-    cfg.auth.profiles['openrouter:default'] = { provider: 'openrouter', mode: 'token' };
     cfg.agents = cfg.agents || {};
     cfg.agents.defaults = cfg.agents.defaults || {};
     if (!cfg.agents.defaults.model) {
@@ -74,6 +94,13 @@ if [ -n "$OPENROUTER_API_KEY" ] && [ "$OPENROUTER_API_KEY" != "sk-or-your-key-he
     }
   "
   echo "   Model: $DEFAULT_MODEL"
+  echo "   ✓ Auth profile created"
+
+  # Export environment variables for OpenRouter integration
+  # According to OpenRouter docs: https://openrouter.ai/docs/guides/guides/claude-code-integration
+  export ANTHROPIC_API_KEY="$OPENROUTER_API_KEY"
+  export ANTHROPIC_BASE_URL="https://openrouter.ai/api/v1"
+  echo "   ✓ OpenRouter base URL configured"
 else
   echo "⚠️  OPENROUTER_API_KEY not set! Please configure it in .env"
   echo "   Get your key at: https://openrouter.ai/"
