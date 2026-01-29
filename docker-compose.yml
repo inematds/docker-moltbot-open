@@ -1,12 +1,12 @@
 services:
   moltbot:
     build: .
-    container_name: moltbot
+    container_name: moltbot-open
     restart: unless-stopped
     env_file:
       - .env
     ports:
-      - "127.0.0.1:18789:18789"  # Loopback only — never expose to 0.0.0.0
+      - "127.0.0.1:18790:18789"  # Loopback only — never expose to 0.0.0.0
     volumes:
       - moltbot-data:/home/moltbot/.clawdbot  # clawdbot runtime uses ~/.clawdbot (will change to ~/.moltbot when moltbot is fully released)
       - moltbot-workspace:/home/moltbot/workspace

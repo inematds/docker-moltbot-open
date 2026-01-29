@@ -60,6 +60,9 @@ if [ -n "$OPENROUTER_API_KEY" ] && [ "$OPENROUTER_API_KEY" != "sk-or-your-key-he
   # Set default model from env var or use Claude Sonnet 4.5
   DEFAULT_MODEL="${DEFAULT_MODEL:-anthropic/claude-sonnet-4-5}"
 
+  # Export for Node.js access
+  export DEFAULT_MODEL
+
   inject_json "$CONFIG_FILE" "
     cfg.auth = cfg.auth || {};
     cfg.auth.profiles = cfg.auth.profiles || {};
@@ -67,7 +70,7 @@ if [ -n "$OPENROUTER_API_KEY" ] && [ "$OPENROUTER_API_KEY" != "sk-or-your-key-he
     cfg.agents = cfg.agents || {};
     cfg.agents.defaults = cfg.agents.defaults || {};
     if (!cfg.agents.defaults.model) {
-      cfg.agents.defaults.model = { primary: 'openrouter/${process.env.DEFAULT_MODEL}' };
+      cfg.agents.defaults.model = { primary: 'openrouter/' + process.env.DEFAULT_MODEL };
     }
   "
   echo "   Model: $DEFAULT_MODEL"
