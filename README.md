@@ -47,11 +47,100 @@ Setup Docker para o [Moltbot](https://molt.bot) — um assistente pessoal de IA 
 | **Windows** | Docker Desktop | [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/) |
 | **Windows** | Git | [git-scm.com](https://git-scm.com/download/win) |
 | **Mac** | Docker Desktop | [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/) |
-| **Linux** | Docker Engine + Compose | `curl -fsSL https://get.docker.com \| sh` |
+| **Linux** | Docker Engine + Compose V2 | Ver instruções abaixo |
 
-> ⚠️ **Usuários Windows:** Certifique-se de que o **Docker Desktop está rodando** antes de continuar. Verifique o ícone do Docker (🐳) na bandeja do sistema. Se o WSL mostrar `docker-desktop Stopped`, abra o Docker Desktop pelo menu Iniciar e espere até aparecer "Docker is running".
+---
 
-> ⚠️ **Usuários Windows:** Se você nunca usou Docker antes, talvez precise habilitar o **WSL 2** primeiro. O Docker Desktop vai pedir para instalar — é só seguir as instruções e reiniciar o computador quando solicitado.
+## 🐳 Instalação do Docker
+
+### Windows
+
+1. **Baixe o Docker Desktop:**
+   - Acesse [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
+   - Clique em "Download for Windows"
+
+2. **Execute o instalador:**
+   - Abra o arquivo `.exe` baixado
+   - Aceite os termos e siga o wizard de instalação
+   - O instalador vai pedir para habilitar o **WSL 2** — aceite
+
+3. **Reinicie o computador** (se solicitado)
+
+4. **Inicie o Docker Desktop:**
+   - Abra pelo menu Iniciar
+   - Espere até aparecer "Docker is running" (ícone 🐳 na bandeja do sistema)
+
+5. **Verifique a instalação:**
+   ```powershell
+   docker --version
+   docker compose version
+   ```
+
+> ⚠️ **WSL 2 não instalado?** Se o Docker Desktop pedir para instalar o WSL 2, siga as instruções na tela. Isso é necessário para rodar containers Linux no Windows.
+
+> ⚠️ **Erro "WSL docker-desktop Stopped"?** Abra o Docker Desktop pelo menu Iniciar — ele inicia o WSL automaticamente.
+
+### Linux (Ubuntu/Debian)
+
+O Docker Compose V2 já vem integrado ao Docker Engine (comando `docker compose`, sem hífen).
+
+1. **Atualize o sistema:**
+   ```bash
+   sudo apt update
+   ```
+
+2. **Instale o Docker Engine:**
+   ```bash
+   sudo apt install -y docker.io
+   ```
+   > O Docker Compose V2 já está incluído — não precisa instalar separadamente.
+
+3. **Inicie o serviço:**
+   ```bash
+   sudo systemctl start docker
+   ```
+
+4. **Habilite no boot:**
+   ```bash
+   sudo systemctl enable docker
+   ```
+
+5. **Adicione seu usuário ao grupo docker** (para rodar sem `sudo`):
+   ```bash
+   sudo usermod -aG docker $USER
+   ```
+   > ⚠️ **Importante:** Faça logout e login novamente para aplicar a mudança.
+
+6. **Verifique a instalação:**
+   ```bash
+   docker --version
+   docker compose version
+   docker ps  # Deve mostrar lista vazia (sem erro)
+   ```
+
+### Linux (Alternativa: Script oficial)
+
+Se preferir usar o script oficial do Docker (instala a versão mais recente):
+
+```bash
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+# Faça logout e login novamente
+```
+
+### Mac
+
+1. **Baixe o Docker Desktop:**
+   - Acesse [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
+   - Escolha a versão para seu chip (Intel ou Apple Silicon)
+
+2. **Arraste para Applications** e abra o Docker Desktop
+
+3. **Verifique a instalação:**
+   ```bash
+   docker --version
+   docker compose version
+   ```
 
 ---
 
