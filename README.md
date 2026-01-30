@@ -61,20 +61,20 @@ Setup Docker para o [Moltbot](https://molt.bot) — um assistente pessoal de IA 
 
 **Linux / Mac:**
 ```bash
-git clone https://github.com/inematds/docker-moltbot.git
-cd docker-moltbot
+git clone https://github.com/inematds/docker-moltbot-open.git
+cd docker-moltbot-open
 ```
 
 **Windows (CMD):**
 ```cmd
-git clone https://github.com/inematds/docker-moltbot.git
-cd docker-moltbot
+git clone https://github.com/inematds/docker-moltbot-open.git
+cd docker-moltbot-open
 ```
 
 **Windows (PowerShell):**
 ```powershell
-git clone https://github.com/inematds/docker-moltbot.git
-cd docker-moltbot
+git clone https://github.com/inematds/docker-moltbot-open.git
+cd docker-moltbot-open
 ```
 
 ### Passo 2: Configure o ambiente
@@ -534,10 +534,10 @@ Turbine seu Moltbot com estas ferramentas adicionais:
 
 | Ferramenta | Instalação | Finalidade |
 |------------|------------|------------|
-| [Codex CLI](https://github.com/openai/codex) | `npm i -g @openai/codex` | Agente de código com IA (OpenAI) |
-| [agent-browser](https://github.com/vercel-labs/agent-browser) | `npm i -g agent-browser` | Automação de navegador headless |
 | FFmpeg | Pré-instalado na imagem Docker | Processamento de áudio/vídeo |
 | Faster Whisper | Pré-instalado na imagem Docker | Transcrição local de áudio |
+
+> ℹ️ **Nota:** Ferramentas como Codex CLI e agent-browser são para outros frameworks e não são compatíveis com este projeto Moltbot.
 
 ### 🎨 Serviços de API
 
@@ -549,20 +549,11 @@ Turbine seu Moltbot com estas ferramentas adicionais:
 | [Gamma](https://gamma.app) | Apresentações e documentos com IA | Tier gratuito + pago |
 | [HeyGen](https://heygen.com) | Avatares de vídeo com IA | Créditos |
 
-### 📚 Skills (para Codex / Claude Code)
+### 📚 MCP Tools (Model Context Protocol)
 
-| Skill | Instalação | Finalidade |
-|-------|------------|------------|
-| [Remotion Skills](https://github.com/inematds/remotion-skills) | Copiar para `.codex/skills/` | Criar vídeos programaticamente com React |
+O Moltbot suporta ferramentas MCP para estender funcionalidades. Consulte a [documentação oficial](https://docs.molt.bot/mcp) para mais informações sobre como adicionar ferramentas personalizadas.
 
-```bash
-# Instalar Remotion Skills para Codex
-docker exec moltbot bash -c '
-  git clone https://github.com/inematds/remotion-skills.git /tmp/remotion-skills
-  mkdir -p .codex/skills
-  cp -r /tmp/remotion-skills/skills/remotion .codex/skills/
-'
-```
+> ℹ️ **Nota:** Skills/Codex são para outros frameworks (Claude Code). Para Moltbot, use ferramentas MCP.
 
 ---
 
@@ -714,8 +705,8 @@ Se você está atualizando do setup antigo `docker-clawdbot`, aqui está o que m
 
 3. **Clone o novo repo:**
    ```bash
-   git clone https://github.com/inematds/docker-moltbot.git
-   cd docker-moltbot
+   git clone https://github.com/inematds/docker-moltbot-open.git
+   cd docker-moltbot-open
    ```
 
 4. **Copie seu .env:**
