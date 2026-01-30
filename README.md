@@ -84,46 +84,36 @@ Setup Docker para o [Moltbot](https://molt.bot) — um assistente pessoal de IA 
 
 O Docker Compose V2 já vem integrado ao Docker Engine (comando `docker compose`, sem hífen).
 
-1. **Atualize o sistema:**
+1. **Instale o Docker** (script oficial):
    ```bash
-   sudo apt update
+   curl -fsSL https://get.docker.com | sh
    ```
 
-2. **Instale o Docker Engine:**
-   ```bash
-   sudo apt install -y docker.io
-   ```
-   > O Docker Compose V2 já está incluído — não precisa instalar separadamente.
-
-3. **Inicie o serviço:**
-   ```bash
-   sudo systemctl start docker
-   ```
-
-4. **Habilite no boot:**
-   ```bash
-   sudo systemctl enable docker
-   ```
-
-5. **Adicione seu usuário ao grupo docker** (para rodar sem `sudo`):
+2. **Adicione seu usuário ao grupo docker** (para rodar sem `sudo`):
    ```bash
    sudo usermod -aG docker $USER
    ```
-   > ⚠️ **Importante:** Faça logout e login novamente para aplicar a mudança.
 
-6. **Verifique a instalação:**
+3. **Faça logout e login novamente** para aplicar a mudança
+
+4. **Verifique a instalação:**
    ```bash
    docker --version
    docker compose version
    docker ps  # Deve mostrar lista vazia (sem erro)
    ```
 
-### Linux (Alternativa: Script oficial)
+> 💡 O script oficial já inicia o serviço e habilita no boot automaticamente.
 
-Se preferir usar o script oficial do Docker (instala a versão mais recente):
+### Linux (Alternativa: via apt)
+
+Se preferir usar o pacote do Ubuntu (pode ser versão mais antiga):
 
 ```bash
-curl -fsSL https://get.docker.com | sh
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
 sudo usermod -aG docker $USER
 # Faça logout e login novamente
 ```
