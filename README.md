@@ -89,21 +89,35 @@ O Docker Compose V2 já vem integrado ao Docker Engine (comando `docker compose`
    curl -fsSL https://get.docker.com | sh
    ```
 
-2. **Adicione seu usuário ao grupo docker** (para rodar sem `sudo`):
+2. **Inicie o serviço:**
+   ```bash
+   sudo systemctl start docker
+   ```
+
+3. **Habilite no boot:**
+   ```bash
+   sudo systemctl enable docker
+   ```
+
+4. **Verifique se está rodando:**
+   ```bash
+   sudo systemctl status docker
+   ```
+   > Deve mostrar `Active: active (running)`. Pressione `q` para sair.
+
+5. **Adicione seu usuário ao grupo docker** (para rodar sem `sudo`):
    ```bash
    sudo usermod -aG docker $USER
    ```
 
-3. **Faça logout e login novamente** para aplicar a mudança
+6. **Faça logout e login novamente** para aplicar a mudança
 
-4. **Verifique a instalação:**
+7. **Verifique a instalação:**
    ```bash
    docker --version
    docker compose version
    docker ps  # Deve mostrar lista vazia (sem erro)
    ```
-
-> 💡 O script oficial já inicia o serviço e habilita no boot automaticamente.
 
 ### Linux (Alternativa: via apt)
 
@@ -114,6 +128,7 @@ sudo apt update
 sudo apt install -y docker.io
 sudo systemctl start docker
 sudo systemctl enable docker
+sudo systemctl status docker  # Verificar se está rodando
 sudo usermod -aG docker $USER
 # Faça logout e login novamente
 ```
@@ -132,15 +147,56 @@ sudo usermod -aG docker $USER
    docker compose version
    ```
 
-### Próximos Passos (após instalar o Docker)
+### Subindo o Container (Linux/Mac)
 
-Com o Docker instalado, você vai precisar:
+Após instalar o Docker, siga estes passos para colocar o Moltbot no ar:
 
-1. **Configurar o arquivo `.env`** — Copie `.env.example` para `.env` e preencha suas chaves de API
-2. **Obter uma API key do OpenRouter** — Acesse [openrouter.ai/keys](https://openrouter.ai/keys) para criar sua chave
-3. **Configurar canais de mensagem** (opcional):
-   - **Telegram:** Crie um bot com o [@BotFather](https://t.me/BotFather) e adicione o token no `.env`
-   - **WhatsApp:** Após iniciar o container, escaneie o QR code com `docker exec -it moltbot clawdbot channels login whatsapp`
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/inematds/docker-moltbot-open.git
+   cd docker-moltbot-open
+   ```
+
+2. **Configure o arquivo `.env`:**
+   ```bash
+   cp .env.example .env
+   nano .env  # ou use seu editor preferido
+   ```
+
+3. **Preencha as variáveis obrigatórias no `.env`:**
+   ```env
+   GATEWAY_AUTH_TOKEN=seu-token-seguro-aqui    # Gere com: openssl rand -hex 24
+   OPENROUTER_API_KEY=sk-or-v1-sua-chave-aqui  # Obtenha em openrouter.ai/keys
+   ```
+
+4. **Configure canais de mensagem** (opcional):
+   ```env
+   # Telegram - crie um bot com @BotFather no Telegram
+   TELEGRAM_BOT_TOKEN=123456:ABC-seu-token-do-botfather
+   ```
+
+5. **Suba o container:**
+   ```bash
+   docker compose up -d
+   ```
+
+6. **Verifique se está rodando:**
+   ```bash
+   docker compose ps      # Status do container
+   docker compose logs    # Ver logs (Ctrl+C para sair)
+   ```
+
+7. **Configure o WhatsApp** (opcional):
+   ```bash
+   docker exec -it moltbot clawdbot channels login whatsapp
+   # Escaneie o QR code com seu celular
+   ```
+
+8. **Acesse o webchat:**
+   ```
+   http://localhost:18789/chat
+   ```
+   > Use o `GATEWAY_AUTH_TOKEN` que você configurou no `.env` para autenticar.
 
 > 💡 Veja as seções [Configuração do Telegram](#-configuração-do-telegram) e [Configuração do WhatsApp](#-configuração-do-whatsapp) para instruções detalhadas.
 
