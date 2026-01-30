@@ -142,6 +142,18 @@ sudo usermod -aG docker $USER
    docker compose version
    ```
 
+### Próximos Passos (após instalar o Docker)
+
+Com o Docker instalado, você vai precisar:
+
+1. **Configurar o arquivo `.env`** — Copie `.env.example` para `.env` e preencha suas chaves de API
+2. **Obter uma API key do OpenRouter** — Acesse [openrouter.ai/keys](https://openrouter.ai/keys) para criar sua chave
+3. **Configurar canais de mensagem** (opcional):
+   - **Telegram:** Crie um bot com o [@BotFather](https://t.me/BotFather) e adicione o token no `.env`
+   - **WhatsApp:** Após iniciar o container, escaneie o QR code com `docker exec -it moltbot clawdbot channels login whatsapp`
+
+> 💡 Veja as seções [Configuração do Telegram](#-configuração-do-telegram) e [Configuração do WhatsApp](#-configuração-do-whatsapp) para instruções detalhadas.
+
 ---
 
 ## 🚀 Início Rápido
