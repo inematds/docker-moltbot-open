@@ -803,6 +803,43 @@ docker compose restart
 | Mensagem "Pairing required" | Isso é esperado — aprove com `clawdbot pairing approve <channel> <code>` |
 | Mudanças de config não aplicadas | Reinicie: `docker compose restart` |
 
+### Problemas de Túnel SSH / Acesso Remoto
+
+Se você não consegue acessar o webchat localmente na sua máquina após criar um túnel SSH, siga estes passos:
+
+**1. Remova a chave SSH antiga (se o IP do servidor mudou):**
+```bash
+ssh-keygen -R seu-servidor-ip
+```
+
+**2. Teste a conexão SSH:**
+```bash
+ssh -o StrictHostKeyChecking=accept-new -o BatchMode=yes usuario@seu-servidor-ip "echo 'Conexão SSH OK!' && hostname"
+```
+
+> 💡 Se falhar, adicione sua chave pública ao `~/.ssh/authorized_keys` do servidor.
+
+**3. Crie o túnel SSH:**
+```bash
+# Túnel em foreground (fecha quando você sair do terminal)
+ssh -L 18789:127.0.0.1:18789 usuario@seu-servidor-ip
+
+# Túnel em background (roda silenciosamente)
+ssh -f -N -L 18789:127.0.0.1:18789 usuario@seu-servidor-ip
+```
+
+**4. Acesse o webchat:**
+```
+http://127.0.0.1:18789/chat
+```
+
+| Problema | Causa | Solução |
+|----------|-------|---------|
+| `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED` | IP do servidor mudou ou reinstalou | `ssh-keygen -R seu-servidor-ip` e reconecte |
+| `Permission denied (publickey)` | Chave SSH não configurada | Adicione sua chave pública ao servidor: `ssh-copy-id usuario@servidor` |
+| `Connection refused` na porta 18789 | Túnel não criado ou container parado | Verifique se o túnel está ativo e se o container está rodando |
+| `bind: Address already in use` | Porta local já em uso | Use outra porta: `ssh -L 18790:127.0.0.1:18789 ...` e acesse via `http://127.0.0.1:18790/chat` |
+
 ### Problemas de Configuração
 
 | Problema | Causa | Solução |
