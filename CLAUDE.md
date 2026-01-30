@@ -101,7 +101,7 @@ The entrypoint.sh configures OpenRouter as the unified LLM gateway:
 
 **OpenRouter configuration** (entrypoint.sh:56-68):
 - Sets up `openrouter:default` auth profile
-- Configures default model from `DEFAULT_MODEL` env var (defaults to `anthropic/claude-sonnet-4-5`)
+- Configures default model from `DEFAULT_MODEL` env var (defaults to `openrouter/anthropic/claude-sonnet-4.5`)
 - Provides access to 200+ models through a single API key
 
 **Supported models via OpenRouter:**
@@ -320,7 +320,7 @@ Gateway is bound to loopback only. For remote access:
 |----------|----------|---------|---------|
 | `GATEWAY_AUTH_TOKEN` | Yes | Protects gateway API | `openssl rand -hex 24` |
 | `OPENROUTER_API_KEY` | Yes | OpenRouter API key (access to 200+ models) | `sk-or-v1-...` |
-| `DEFAULT_MODEL` | No | Default LLM model to use | `anthropic/claude-sonnet-4-5` |
+| `DEFAULT_MODEL` | No | Default LLM model to use | `openrouter/anthropic/claude-sonnet-4.5` |
 | `TELEGRAM_BOT_TOKEN` | No | Telegram channel | `123456:ABC...` |
 | `BRAVE_API_KEY` | No | Web search tool | `...` |
 | `LOG_LEVEL` | No | Logging verbosity | `info` (default) |

@@ -58,7 +58,7 @@ if [ -n "$OPENROUTER_API_KEY" ] && [ "$OPENROUTER_API_KEY" != "sk-or-your-key-he
   echo "🧠 OpenRouter configured — multi-model gateway active"
 
   # Set default model from env var or use Claude Sonnet 4.5
-  DEFAULT_MODEL="${DEFAULT_MODEL:-anthropic/claude-sonnet-4-5}"
+  DEFAULT_MODEL="${DEFAULT_MODEL:-openrouter/anthropic/claude-sonnet-4.5}"
 
   # Export for Node.js access
   export DEFAULT_MODEL
@@ -69,8 +69,7 @@ if [ -n "$OPENROUTER_API_KEY" ] && [ "$OPENROUTER_API_KEY" != "sk-or-your-key-he
   mkdir -p "$AGENT_DIR"
 
   # Create auth-profiles.json with OpenRouter credentials
-  # Also create an "anthropic" profile that uses OpenRouter token
-  # This allows models like "anthropic/claude-sonnet-4-5" to work via OpenRouter
+  # Models must use the openrouter/ prefix: "openrouter/anthropic/claude-sonnet-4.5"
   cat > "$AUTH_PROFILES_FILE" <<EOF
 {
   "openrouter:default": {
@@ -129,7 +128,7 @@ echo ""
 echo "╔══════════════════════════════════════════════════════════╗"
 echo "║  🌐 Webchat: http://localhost:18789/chat                ║"
 echo "║  🔑 Token: use your GATEWAY_AUTH_TOKEN from .env        ║"
-echo "║  🧠 Model: ${DEFAULT_MODEL:-anthropic/claude-sonnet-4-5} ║"
+echo "║  🧠 Model: ${DEFAULT_MODEL:-openrouter/anthropic/claude-sonnet-4.5} ║"
 echo "║  📋 Status: docker exec moltbot clawdbot status          ║"
 echo "╚══════════════════════════════════════════════════════════╝"
 echo ""

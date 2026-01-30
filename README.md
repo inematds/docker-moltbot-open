@@ -109,7 +109,7 @@ GATEWAY_AUTH_TOKEN=your-secure-token-here
 # ✅ CERTO — suas chaves reais:
 OPENROUTER_API_KEY=sk-or-v1-abc123-your-actual-real-key
 GATEWAY_AUTH_TOKEN=a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6
-DEFAULT_MODEL=anthropic/claude-sonnet-4-5
+DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4.5
 ```
 
 ### Passo 3: Gere um token seguro para o gateway
@@ -151,30 +151,42 @@ Este setup usa **OpenRouter** como gateway unificado de LLMs. Com uma única API
 
 **Escolha seu modelo padrão:**
 
-Edite `DEFAULT_MODEL` no `.env` para escolher qual modelo usar:
+Edite `DEFAULT_MODEL` no `.env` para escolher qual modelo usar.
+
+⚠️ **IMPORTANTE:** O formato correto é `openrouter/<provider>/<model>` (com o prefixo `openrouter/`)
 
 ```env
-# Opção 1: Claude Sonnet 4.5 (melhor qualidade, recomendado)
-DEFAULT_MODEL=anthropic/claude-sonnet-4-5
+# Opção 1: Claude Sonnet 4.5 (melhor qualidade, recomendado) ⭐
+DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4.5
 
 # Opção 2: Claude 3.5 Sonnet (ótimo custo-benefício)
-DEFAULT_MODEL=anthropic/claude-3.5-sonnet
+DEFAULT_MODEL=openrouter/anthropic/claude-3.5-sonnet
 
 # Opção 3: GPT-4o (excelente para código)
-DEFAULT_MODEL=openai/gpt-4o
+DEFAULT_MODEL=openrouter/openai/gpt-4o
 
-# Opção 4: Gemini 2.0 Flash (GRÁTIS, muito rápido)
-DEFAULT_MODEL=google/gemini-2.0-flash-exp
+# Opção 4: Gemini 2.0 Flash (GRÁTIS, muito rápido) 🆓
+DEFAULT_MODEL=openrouter/google/gemini-2.0-flash-exp
 
-# Opção 5: Llama 3.3 70B (GRÁTIS, open source)
-DEFAULT_MODEL=meta-llama/llama-3.3-70b-instruct
+# Opção 5: Llama 3.3 70B (GRÁTIS, open source) 🆓
+DEFAULT_MODEL=openrouter/meta-llama/llama-3.3-70b-instruct
+
+# Opção 6: DeepSeek R1 (GRÁTIS, raciocínio avançado) 🆓
+DEFAULT_MODEL=openrouter/deepseek/deepseek-r1
 ```
 
-> 💡 **Dica:** Você pode trocar de modelo a qualquer momento editando o `.env` e executando `docker compose restart`
+> ⚠️ **ATENÇÃO:** NÃO esqueça do prefixo `openrouter/` no início! Sem ele o modelo não será reconhecido.
+
+> 💡 **Dica:** Você pode trocar de modelo a qualquer momento editando o `.env` e executando:
+> ```bash
+> docker compose down -v && docker compose up -d
+> ```
 
 > 💰 **Modelos Grátis:** Gemini 2.0 Flash, Llama 3.3 70B e DeepSeek R1 são totalmente gratuitos no OpenRouter. Perfeito para testar!
 
 > 📊 **Preços e limites:** Consulte [openrouter.ai/models](https://openrouter.ai/models) para ver preços, limites de contexto e velocidade de cada modelo.
+
+> 📖 **Guia completo:** Ver [SETUP-OPENROUTER.md](SETUP-OPENROUTER.md) para troubleshooting e mais opções de modelos.
 
 ### Passo 5: Build e execução
 
@@ -560,14 +572,14 @@ Estratégia recomendada de modelos para diferentes tarefas:
 
 | Modelo | Provedor | Nome do Modelo | Caso de Uso | Custo |
 |--------|----------|----------------|-------------|-------|
-| **Claude Opus 4.5** | Anthropic | `anthropic/claude-opus-4-5` | Assistente principal — conversas, tarefas complexas (padrão) | Pago (API) |
-| **Claude 3.5 Sonnet** | Anthropic | `anthropic/claude-3-5-sonnet-20241022` | Alternativa mais rápida e econômica | Pago (API) |
-| **GPT-4** | OpenAI | `openai/gpt-4` | Geração de código, análise | Pago (API) |
-| **Gemini 2.0 Flash** | Google | `google/gemini-2.0-flash` | Tarefas rápidas, consultas simples | Tier gratuito disponível |
+| **Claude Sonnet 4.5** | Anthropic | `openrouter/anthropic/claude-sonnet-4.5` | Assistente principal — conversas, tarefas complexas (recomendado) | Pago (via OpenRouter) |
+| **Claude 3.5 Sonnet** | Anthropic | `openrouter/anthropic/claude-3.5-sonnet` | Alternativa mais rápida e econômica | Pago (via OpenRouter) |
+| **GPT-4o** | OpenAI | `openrouter/openai/gpt-4o` | Geração de código, análise | Pago (via OpenRouter) |
+| **Gemini 2.0 Flash** | Google | `openrouter/google/gemini-2.0-flash-exp` | Tarefas rápidas, consultas simples | GRÁTIS (via OpenRouter) |
 
-> ⚠️ **Importante:** Use os **nomes exatos** dos modelos listados acima. Modelos como `claude-sonnet-4.5` (sem versão) não existem e causarão erro.
+> ⚠️ **Importante:** Use os **nomes exatos** dos modelos listados acima. SEMPRE inclua o prefixo `openrouter/` antes do nome do modelo.
 
-> 💡 **Padrão:** Se você não especificar um modelo, o Anthropic usará automaticamente `claude-opus-4-5` como padrão.
+> 💡 **Padrão:** Se você não especificar um modelo, será usado `openrouter/anthropic/claude-sonnet-4.5` como padrão.
 
 ### Como mudar o modelo
 
@@ -575,7 +587,7 @@ Se você quiser usar um modelo diferente do padrão, use o script `change-model.
 
 ```bash
 # Mudar para Claude 3.5 Sonnet (mais rápido e econômico)
-./change-model.sh "anthropic/claude-3-5-sonnet-20241022"
+./change-model.sh "openrouter/anthropic/claude-3.5-sonnet"
 
 # Ou mudar diretamente:
 docker exec moltbot sh -c "cat > /tmp/change-model.js << 'EOJS'
@@ -583,7 +595,7 @@ const fs = require('fs');
 const cfg = JSON.parse(fs.readFileSync('/home/moltbot/.clawdbot/clawdbot.json', 'utf8'));
 cfg.agents = cfg.agents || {};
 cfg.agents.defaults = cfg.agents.defaults || {};
-cfg.agents.defaults.model = { primary: 'anthropic/claude-3-5-sonnet-20241022' };
+cfg.agents.defaults.model = { primary: 'openrouter/anthropic/claude-3.5-sonnet' };
 fs.writeFileSync('/home/moltbot/.clawdbot/clawdbot.json', JSON.stringify(cfg, null, 2));
 EOJS
 node /tmp/change-model.js"
@@ -591,7 +603,7 @@ node /tmp/change-model.js"
 docker compose restart
 ```
 
-> ⚠️ **Use nomes exatos:** Modelos devem incluir o prefixo do provedor (ex: `anthropic/`, `openai/`, `google/`) e a versão completa.
+> ⚠️ **Use nomes exatos:** Modelos devem SEMPRE incluir o prefixo `openrouter/` seguido do provedor (ex: `openrouter/anthropic/`, `openrouter/openai/`, `openrouter/google/`).
 
 ---
 
@@ -657,11 +669,11 @@ docker compose restart
 
 | Problema | Causa | Solução |
 |----------|-------|---------|
-| **"Unknown model: anthropic/claude-sonnet-4.5"** | Nome de modelo inválido | Use `anthropic/claude-opus-4-5` ou `anthropic/claude-3-5-sonnet-20241022`. O modelo `claude-sonnet-4.5` não existe. |
+| **"Unknown model: anthropic/claude-sonnet-4.5"** | Falta o prefixo `openrouter/` | Use `openrouter/anthropic/claude-sonnet-4.5` (sempre inclua o prefixo `openrouter/`). Veja [SETUP-OPENROUTER.md](SETUP-OPENROUTER.md) para mais detalhes. |
 | **Bot não responde após mudar o modelo** | Config corrompida ou modelo inválido | Execute `docker compose down -v` (⚠️ apaga dados), depois `docker compose up -d` para começar do zero |
 | **Mudanças no .env não aplicadas** | `docker compose restart` não recarrega variáveis de ambiente | Use `docker compose down && docker compose up -d` para recarregar o `.env` |
 | **Config manual não funciona** | Edição manual causou inconsistências | ⚠️ **NÃO edite** `/home/moltbot/.clawdbot/clawdbot.json` manualmente. Deixe o `entrypoint.sh` configurar automaticamente via variáveis de ambiente no `.env` |
-| **OpenRouter não funciona** | Esta versão tem suporte limitado ao OpenRouter | Use Anthropic, OpenAI ou Google diretamente. OpenRouter será melhor suportado em versões futuras. |
+| **"No API key found for provider 'anthropic'"** | Falta o prefixo `openrouter/` no modelo | Sempre use modelos com prefixo `openrouter/`, ex: `openrouter/anthropic/claude-sonnet-4.5`. Consulte [SETUP-OPENROUTER.md](SETUP-OPENROUTER.md). |
 
 > 💡 **Melhor prática:** Configure tudo via arquivo `.env` e deixe o `entrypoint.sh` fazer a configuração automática. Evite editar `clawdbot.json` manualmente!
 

@@ -1,21 +1,23 @@
 #!/bin/bash
 # Script para alterar o modelo do Moltbot
-# Uso: ./change-model.sh "anthropic/claude-opus-4.5"
+# Uso: ./change-model.sh "openrouter/anthropic/claude-sonnet-4.5"
 
 if [ -z "$1" ]; then
   echo "❌ Erro: Especifique o modelo"
   echo ""
   echo "Uso: $0 <modelo>"
   echo ""
-  echo "Exemplos de modelos disponíveis via OpenRouter:"
-  echo "  - anthropic/claude-sonnet-4.5 (atual)"
-  echo "  - anthropic/claude-opus-4.5 (mais poderoso)"
-  echo "  - anthropic/claude-3.5-sonnet"
-  echo "  - openai/gpt-5.2-codex"
-  echo "  - google/gemini-2.0-flash"
-  echo "  - deepseek/deepseek-r1 (gratuito)"
+  echo "⚠️  IMPORTANTE: Use o prefixo openrouter/ antes do nome do modelo!"
   echo ""
-  echo "Exemplo: $0 \"anthropic/claude-opus-4.5\""
+  echo "Exemplos de modelos disponíveis via OpenRouter:"
+  echo "  - openrouter/anthropic/claude-sonnet-4.5 (recomendado)"
+  echo "  - openrouter/anthropic/claude-3.5-sonnet (rápido)"
+  echo "  - openrouter/openai/gpt-4o (código)"
+  echo "  - openrouter/google/gemini-2.0-flash-exp (gratuito)"
+  echo "  - openrouter/meta-llama/llama-3.3-70b-instruct (gratuito)"
+  echo "  - openrouter/deepseek/deepseek-r1 (gratuito)"
+  echo ""
+  echo "Exemplo: $0 \"openrouter/anthropic/claude-sonnet-4.5\""
   exit 1
 fi
 
